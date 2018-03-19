@@ -1,7 +1,8 @@
 // JavaScript source code
 // set counter
-var sessionLength = 25;
-var breakLength = 5;
+var inProgress = false;
+var sessionLength = 1;
+var breakLength = 1;
 
 var sessionTime = document.querySelector('#sessionTime');
 var sessionIncrement = document.querySelector('#sessionIncrement');
@@ -11,22 +12,11 @@ var breakTime = document.querySelector('#breakTime');
 var breakIncrement = document.querySelector('#breakIncrement');
 var breakDecrement = document.querySelector('#breakDecrement');
 
+var start = document.querySelector('#start');
+var stop = document.querySelector('#stop');
 
-//function increment(counter, selector) {
-//    console.log("...........................");
-//    console.log("increment function start...");
-//    console.log("counter is: ", counter);
-//    console.log("selector is: ", selector);
-//    console.log("selector innerHtml is:", selector.innerHTML);
-//    if (counter >= 0 && counter < 59) {
-//        counter++;
-//        console.log("counter is: ", counter);
-//        selector.innerHTML = counter;
-//        console.log("selector innerHtml is:", selector.innerHTML);
-//    }
-//    console.log("increment function end...");
 
-//}
+
 
 function increment(time) {
     console.log("...........................");
@@ -60,42 +50,7 @@ function decrement(time) {
     console.log("decrement function end...");
 }
 
-//function decrement(counter, selector) {
-//    console.log("...........................");
-//    console.log("decrement function start");
-//    console.log("counter is: ", counter);
-//    console.log("selector is: ", selector);
-//    console.log("selector innerHtml is:", selector.innerHTML);
-//    if (counter > 0 && counter <= 59) {
-//        counter--;
-//        console.log("counter is: ", counter);
-//        selector.innerHTML = counter;
-//        console.log("selector innerHtml is:", selector.innerHTML);
 
-//    }
-//    console.log("decrement function end...");
-//}
-
-
-
-
-/*
-function() {
-if(breakLength >= 0 && breakLength < 59) {
-breakLength++;
-breakTime.innerHTML = breakLength;
-}
-});
-*/
-
-
-
-/*function() {
-  if(breakLength > 0 && breakLength <= 59) {
-    breakLength--;
-    breakTime.innerHTML = breakLength;
-  }
-});*/
 
 
 
@@ -108,21 +63,45 @@ console.log(sessionLengthMill);
 console.log(breakLengthMill);
 
 
-// on click
-//var start = document.querySelector('#start');
+function displayTime(counter) {
+    var mins = Math.floor(counter / 60);
+    var seconds = counter % 60;
+    if (seconds >= 10) {
+        return `${mins} : ${seconds}`;
+    } else {
+        return `${mins} : 0${seconds}`;
+    }
+
+}
 
 
-//function startTimer() {
-//    // find time now
-//    var startTime = Date.now();
-//    console.log("Start is: ", startTime);
+function toggleTimer(time) {
+   // find time now
+   inProgress = !inProgress;
+   var counter = time * 60;
+   var breakCounter = breakTime * 60;
 
-//    // subtract the variable from now time
-//    var endTime = startTime + sessionLengthMill;
-//    console.log("End is: ", endTime);
+    if(inProgress) {
+        setInterval(function() {
+            if(counter > 0) {
+                counter--;
+                console.log(counter);
+                console.log(displayTime(counter));
+                sessionTime.innerHTML = displayTime(counter);
+            } else if (counter === 0) {
+                if(breakCounter > 0) {
+                    breakCounter--;
+                    console.log(breakCounter);
+                    console.log(displayTime(breakCounter));
+                    breakTime.innerHTML = displayTime(breakCounter);
+                }
+            }
+        }, 1000);
+    } 
+    
 
-//    // countdown
-//}
+   // countdown
+}
 
 //function stopTimer() {
 
@@ -144,5 +123,8 @@ sessionIncrement.addEventListener('click', function () {
     increment(sessionTime);
 });
 
-//start.addEventListener('click', startTimer);
+start.addEventListener('click', function() {
+    toggleTimer(sessionLength);
+});
+
 //stop.addEventListener('click', stopTimer);
