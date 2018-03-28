@@ -3,6 +3,7 @@
 var inProgress = false;
 var sessionLength = 1;
 var breakLength = 1;
+var currentTime = 0;
 
 var sessionTime = document.querySelector('#sessionTime');
 var sessionIncrement = document.querySelector('#sessionIncrement');
@@ -74,12 +75,13 @@ function displayTime(counter) {
     } else {
         return `${mins} : 0${seconds}`;
     }
-
 }
+
 
 function startTimer(time) {
     // find time now
     inProgress = true;
+    currentTime = time;
     var workCounter = time * 60;
     var breakCounter = breakTime * 60;
  
@@ -104,7 +106,7 @@ function startTimer(time) {
                 }
             }
         }
-    }, 1000);
+    }, 100);
 }
 
 function stopTimer() {
@@ -163,8 +165,8 @@ sessionIncrement.addEventListener('click', function () {
     increment(sessionTime);
 });
 
-start.addEventListener('click', () => startTimer(sessionLength));
+start.addEventListener('click', () => startTimer(sessionTime.innerHTML));
 
-stop.addEventListener('click', () => stopTimer(breakLength));
+stop.addEventListener('click', () => stopTimer(breakTime.innerHTML));
 
-reset.addEventListener('click', () => resetTimer(breakLength));
+reset.addEventListener('click', () => resetTimer());
