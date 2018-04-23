@@ -1,18 +1,21 @@
-// JavaScript source code
+// main.js
 // set counter
 var inProgress = false;
 var sessionLength = 1;
 var breakLength = 1;
 var currentTime = 0;
+var countdown;
 
+
+// Select the session elements
 var sessionTime = document.querySelector('#sessionTime');
 var sessionIncrement = document.querySelector('#sessionIncrement');
 var sessionDecrement = document.querySelector('#sessionDecrement');
-
+// Select the break elements
 var breakTime = document.querySelector('#breakTime');
 var breakIncrement = document.querySelector('#breakIncrement');
 var breakDecrement = document.querySelector('#breakDecrement');
-
+// Seleect the buttons
 var start = document.querySelector('#start');
 var stop = document.querySelector('#stop');
 var reset = document.querySelector('#reset');
@@ -23,13 +26,12 @@ breakTime.innerHTML = breakLength;
 
 
 
-
 function increment(time) {
     // console.log("...........................");
     // console.log("increment function start...");
     // console.log("time is: ", time);
     // console.log("time innerHtml is:", time.innerHTML);
-    var timer = time.innerHTML
+    var timer = time.innerHTML;
     if (timer >= 0 && timer < 59) {
         timer++;
         // console.log("timer is: ", timer);
@@ -37,6 +39,8 @@ function increment(time) {
         // console.log("time innerHtml is:", time.innerHTML);
     }
     // console.log("increment function end...");
+    sessionLength = sessionTime.innerHTML;
+    breakLength = breakTime.innerHTML;
 }
 
 function decrement(time) {
@@ -52,6 +56,8 @@ function decrement(time) {
         // console.log("time innerHtml is:", time.innerHTML);
     }
     // console.log("decrement function end...");
+    sessionLength = sessionTime.innerHTML;
+    breakLength = breakTime.innerHTML;
 }
 
 
@@ -60,11 +66,11 @@ function decrement(time) {
 
 
 // convert time from minutes to milliseconds???
-var sessionLengthMill = sessionLength * 60 * 1000;
-var breakLengthMill = breakLength * 60 * 1000;
+// var sessionLengthMill = sessionLength * 60 * 1000;
+// var breakLengthMill = breakLength * 60 * 1000;
 
-console.log(sessionLengthMill);
-console.log(breakLengthMill);
+// console.log(sessionLengthMill);
+// console.log(breakLengthMill);
 
 
 function displayTime(counter) {
@@ -80,14 +86,21 @@ function displayTime(counter) {
 
 function startTimer(time) {
     // find time now
+    console.log("Start the countdown!!!");
     inProgress = true;
     currentTime = time;
+    console.log(currentTime);
+    console.log(time);
+    
     var workCounter = time * 60;
     var breakCounter = breakTime * 60;
  
      
-    setInterval(function() {
+    countdown = setInterval(function() {
+        console.log("In setInterval() function");
+        console.log(inProgress);
         if(inProgress) {
+            console.log(workCounter);
             if(workCounter > 0) {
                 workCounter--;
                 console.log("workCounter is: ", workCounter);
@@ -110,10 +123,13 @@ function startTimer(time) {
 }
 
 function stopTimer() {
-    inProgress = false;
+    console.log("Stop the countdown!!!");
+    // inProgress = false;
+    clearInterval(countdown);
 }
 
 function resetTimer() {
+    console.log("Reset the countdown!!!");
     inProgress = false;
     sessionTime.innerHTML = sessionLength;
     breakTime.innerHTML = breakLength;
